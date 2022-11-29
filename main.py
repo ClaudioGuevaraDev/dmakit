@@ -23,9 +23,7 @@ def index_page():
 app.register_blueprint(blueprint=informative_summary.router, url_prefix="/api/informative_summary")
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        app.run(host="0.0.0.0", port=4000, debug=True)
-    else:
-        FlaskUI(app=app, port=4000, server="flask").run()
+    app.run(host="0.0.0.0", port=4000, debug=True)
+    #FlaskUI(app=app, port=4000, server="flask").run()
 
 # pyinstaller --add-data "frontend/dist;frontend/dist" --noconsole --noconfirm main.py
