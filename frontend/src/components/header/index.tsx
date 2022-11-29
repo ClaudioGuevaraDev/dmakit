@@ -1,26 +1,21 @@
 import Select from "../select";
 
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import {
   fileTypeOptions,
   vectorialServicesOptions,
   graphsServicesOptions,
 } from "../../utils/options";
 import FileInput from "../file_input";
+import { HeaderOptions } from "../../interfaces/header";
 
-interface HeaderOptions {
-  fileTypeValue: string;
-  selectServiceValue: string;
-  file: File | null;
+interface Props {
+  setSection: Dispatch<SetStateAction<string>>;
+  headerOptions: HeaderOptions;
+  setHeaderOptions: Dispatch<SetStateAction<HeaderOptions>>;
 }
 
-function Header() {
-  const [headerOptions, setHeaderOptions] = useState<HeaderOptions>({
-    fileTypeValue: fileTypeOptions[0].value,
-    selectServiceValue: vectorialServicesOptions[0].value,
-    file: null,
-  });
-
+function Header({ setSection, headerOptions, setHeaderOptions }: Props) {
   return (
     <>
       <h1 className="text-3xl font-bold">Machine Learning Tools</h1>
@@ -65,6 +60,7 @@ function Header() {
                 ...headerOptions,
                 selectServiceValue: e.target.value,
               });
+              setSection(e.target.value);
             }}
           />
         </div>

@@ -1,9 +1,35 @@
 import Header from "./components/header";
+import { useState } from "react";
+import { fileTypeOptions, vectorialServicesOptions } from "./utils/options";
+import { HeaderOptions } from "./interfaces/header";
+import InformativeSummary from "./components/sections/informative_summary";
+import { ToastContainer } from "react-toastify";
 
 function App() {
+  const [section, setSection] = useState<string>("informativeSummary");
+  const [headerOptions, setHeaderOptions] = useState<HeaderOptions>({
+    fileTypeValue: fileTypeOptions[0].value,
+    selectServiceValue: vectorialServicesOptions[0].value,
+    file: null,
+  });
+
   return (
     <div className="container mx-auto max-w-screen-xl min-h-screen p-5 space-y-3">
-      <Header />
+      <Header
+        setSection={setSection}
+        headerOptions={headerOptions}
+        setHeaderOptions={setHeaderOptions}
+      />
+
+      {section === "informativeSummary" && headerOptions.file && (
+        <InformativeSummary file={headerOptions.file} />
+      )}
+
+      <ToastContainer
+        position="top-right"
+        closeButton={true}
+        pauseOnHover={true}
+      />
     </div>
   );
 }
