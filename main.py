@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import Flask, render_template
 from flask_cors import CORS
@@ -19,7 +20,9 @@ def index_page():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=4000, debug=True)
-    #FlaskUI(app=app, port=4000, server="flask").run()
+    if len(sys.argv) == 2 and sys.argv[1] == "dev":
+        app.run(host="0.0.0.0", port=4000, debug=True)
+    else:
+        FlaskUI(app=app, port=4000, server="flask").run()
 
 # pyinstaller --add-data "frontend/dist;frontend/dist" --noconsole --noconfirm main.py
