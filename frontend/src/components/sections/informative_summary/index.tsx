@@ -100,7 +100,7 @@ function InformativeSummary({ file }: Props) {
           </div>
 
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold">Data type by column</h2>
+            <h2 className="text-xl font-semibold">Data type by column</h2>
 
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-3">

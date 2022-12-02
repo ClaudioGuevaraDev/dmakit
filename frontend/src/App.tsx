@@ -4,6 +4,7 @@ import { fileTypeOptions, vectorialServicesOptions } from "./utils/options";
 import { HeaderOptions } from "./interfaces/header";
 import InformativeSummary from "./components/sections/informative_summary";
 import { ToastContainer } from "react-toastify";
+import DataVisualization from "./components/sections/data_visualization";
 
 function App() {
   const [section, setSection] = useState<string>("informativeSummary");
@@ -21,9 +22,15 @@ function App() {
         setHeaderOptions={setHeaderOptions}
       />
 
-      {section === "informativeSummary" && headerOptions.file && (
-        <InformativeSummary file={headerOptions.file} />
-      )}
+      <div>
+        {section === "informativeSummary" && headerOptions.file && (
+          <InformativeSummary file={headerOptions.file} />
+        )}
+
+        {section === "dataVisualization" && headerOptions.file && (
+          <DataVisualization file={headerOptions.file} />
+        )}
+      </div>
 
       <ToastContainer
         position="top-right"

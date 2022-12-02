@@ -1,5 +1,6 @@
 import { Option } from "../interfaces/select";
 
+// Header
 export const fileTypeOptions: Option[] = [
   {
     value: "vectorial",
@@ -8,7 +9,7 @@ export const fileTypeOptions: Option[] = [
   {
     value: "graphs",
     label: "Graphs",
-  }
+  },
 ];
 
 export const vectorialServicesOptions: Option[] = [
@@ -34,5 +35,21 @@ export const graphsServicesOptions: Option[] = [
   {
     value: "gcn/gnn",
     label: "GCN/GNN",
+  },
+];
+
+// Data Visualization
+export const typeChartsOptions: Option[] = [
+  {
+    value: "barChart",
+    label: "Bar Chart",
+  },
+  {
+    value: "lineChart",
+    label: "Line Chart",
+  },
+  {
+    value: "scatterPlot",
+    label: "Scatter Plot",
   },
 ];

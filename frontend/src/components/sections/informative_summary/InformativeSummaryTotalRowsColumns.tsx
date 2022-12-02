@@ -9,11 +9,11 @@ function InformativeSummaryTotalRowsColumns({
 }: Props) {
   return (
     <>
-      <h2 className="text-2xl font-semibold">Total rows and columns</h2>
-      <p className="font-bold">
+      <h2 className="text-xl font-semibold">Total rows and columns</h2>
+      <p className="font-semibold">
         Total rows: <span className="font-normal">{totalRows}</span>
       </p>
-      <p className="font-bold">
+      <p className="font-semibold">
         Total columns: <span className="font-normal">{totalColumns}</span>
       </p>
     </>
