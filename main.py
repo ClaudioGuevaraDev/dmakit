@@ -15,7 +15,6 @@ app = Flask(
 
 CORS(app=app)
 
-
 @app.get("/")
 def index_page():
     return render_template("index.html")
