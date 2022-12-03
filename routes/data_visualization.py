@@ -37,6 +37,8 @@ def generate_data_chart():
         df = pd.read_csv(request.files.get("file"))
         data = json.loads(request.form.get("data"))
 
+        df.dropna(inplace=True)
+
         xColumn = data["xColumn"]
         yColumn = data["yColumn"]
         typeChart = data["typeChart"]

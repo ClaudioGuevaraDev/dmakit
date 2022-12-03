@@ -187,23 +187,9 @@ function DataVisualization({ file }: DataVisualizationProps) {
         link.download = "chart.png";
         link.href = dataUrl;
         link.click();
-        setSectionData({
-          ...sectionData,
-          data: {
-            ...sectionData.data,
-            showChartLabels: false,
-          },
-        });
       })
       .catch((err) => {
         handleError("Error downloading chart");
-        setSectionData({
-          ...sectionData,
-          data: {
-            ...sectionData.data,
-            showChartLabels: false,
-          },
-        });
       });
   }, [containerChart]);
 
@@ -213,12 +199,20 @@ function DataVisualization({ file }: DataVisualizationProps) {
       data: {
         ...sectionData.data,
         showChartLabels: true,
-        showModal: false,
       },
     });
 
-    handlePng();
-  };
+    handlePng()
+
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        showChartLabels: false,
+        showModal: false
+      },
+    });    
+  }
 
   return (
     <>
@@ -289,16 +283,18 @@ function DataVisualization({ file }: DataVisualizationProps) {
           <>
             <div ref={containerChart}>
               {sectionData.data.typeChart === "barChart" &&
-                (sectionData.data.showChartLabels ? (
+                sectionData.data.showChartLabels === true && (
                   <BarChartWithLabels
                     data={sectionData.data.dataChart}
                     title={sectionData.data.chartTitle}
                     xLabel={sectionData.data.chartXLabel}
                     yLabel={sectionData.data.chartYLabel}
                   />
-                ) : (
+                )}
+              {sectionData.data.typeChart === "barChart" &&
+                sectionData.data.showChartLabels === false && (
                   <BarChartWithoutLabels data={sectionData.data.dataChart} />
-                ))}
+                )}
               {sectionData.data.typeChart === "lineChart" &&
                 (sectionData.data.showChartLabels ? (
                   <LineChartWithLabels
