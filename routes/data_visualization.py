@@ -30,16 +30,54 @@ def data_visualization_info():
 
         return jsonify(response), 500
 
+
 @router.post("/generate_data_chart")
 def generate_data_chart():
     try:
         df = pd.read_csv(request.files.get("file"))
         data = json.loads(request.form.get("data"))
 
-        print(data)
+        xColumn = data["xColumn"]
+        yColumn = data["yColumn"]
+        typeChart = data["typeChart"]
 
+        xValues = df[xColumn].values.tolist()
+        yValues = df[yColumn].values.tolist()
 
-        return ""
+        data = None
+        if typeChart == "barChart":
+            data = [
+                {
+                    "x": xValues,
+                    "y": yValues,
+                    "type": "bar",
+                    "name": xColumn
+                }
+            ]
+        elif typeChart == "lineChart":
+            data = [
+                {
+                    "x": xValues,
+                    "y": yValues,
+                    "mode": "lines",
+                    "name": xColumn
+                }
+            ]
+        elif typeChart == "scatterPlot":
+            data = [
+                {
+                    "x": xValues,
+                    "y": yValues,
+                    "mode": "markers",
+                    "name": xColumn
+                }
+            ]
+
+        response = {
+            "data_chart": data
+        }
+
+        return jsonify(data), 200
     except Exception as error:
         print(error)
         response = {

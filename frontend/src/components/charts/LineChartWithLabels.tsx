@@ -1,33 +1,34 @@
 import Plot from "react-plotly.js";
 
-interface Props {
-  x: any[];
-  y: any[];
+interface LineChartWithLabelsProps {
+  data: any[];
+  title: string;
+  xLabel: string;
+  yLabel: string;
 }
 
-function BarChart({ x, y }: Props) {
+function LineChartWithLabels({
+  data,
+  title,
+  xLabel,
+  yLabel,
+}: LineChartWithLabelsProps) {
   return (
     <Plot
-      data={[
-        {
-          x,
-          y,
-          type: "bar",
-        },
-      ]}
+      data={data}
       layout={{
         height: 500,
         title: {
-          text: "Frequency of column data types",
+          text: title,
           font: {
             size: 20,
           },
         },
         xaxis: {
-          title: "Data Types",
+          title: xLabel,
         },
         yaxis: {
-          title: "Frequency",
+          title: yLabel,
         },
         autosize: true,
       }}
@@ -40,4 +41,4 @@ function BarChart({ x, y }: Props) {
   );
 }
 
-export default BarChart;
+export default LineChartWithLabels;

@@ -2,5 +2,6 @@ main.spec
 
 build/
 dist/
+venv
 
 *__pycache__/

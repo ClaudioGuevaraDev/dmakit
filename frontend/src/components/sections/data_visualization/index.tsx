@@ -4,6 +4,9 @@ import { Option } from "../../../interfaces/select";
 import { handleError } from "../../../utils/notifications";
 import { typeChartsOptions } from "../../../utils/options";
 import ButtonService from "../../button/ButtonService";
+import BarChartWithoutLabels from "../../charts/BarChartWithoutLabels";
+import LineChartWithoutLabels from "../../charts/LineChartWithoutLabels";
+import ScatterPlotWithoutLabels from "../../charts/ScatterPlotWithoutLabels";
 import Select from "../../select";
 
 interface DataVisualizationProps {
@@ -16,9 +19,11 @@ interface SectionData {
   data: {
     typeChart: string;
     columns: Option[];
-    xColumns: string | string[];
-    yColumns: string | string[];
+    xColumns: string;
+    yColumns: string;
     loadingService: boolean;
+    dataChart: any[];
+    loading: boolean;
   };
 }
 
@@ -27,9 +32,11 @@ function DataVisualization({ file }: DataVisualizationProps) {
     data: {
       typeChart: typeChartsOptions[0].value,
       columns: [],
-      xColumns: [],
+      xColumns: "",
       yColumns: "",
       loadingService: false,
+      dataChart: [],
+      loading: false,
     },
     loading: false,
     showData: false,
@@ -62,7 +69,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
           ...sectionData.data,
           columns: response.data.columns,
           xColumns: response.data.columns[0].value,
-          yColumns: [response.data.columns[0].value],
+          yColumns: response.data.columns[0].value,
         },
       });
     } catch (error: any) {
@@ -77,9 +84,17 @@ function DataVisualization({ file }: DataVisualizationProps) {
   };
 
   const serviceFunction = async () => {
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        loading: true,
+      },
+    });
+
     const postData = JSON.stringify({
-      xColumns: sectionData.data.xColumns,
-      yColumns: sectionData.data.yColumns,
+      xColumn: sectionData.data.xColumns,
+      yColumn: sectionData.data.yColumns,
       typeChart: sectionData.data.typeChart,
     });
 
@@ -91,6 +106,17 @@ function DataVisualization({ file }: DataVisualizationProps) {
       "http://localhost:4000/api/data_visualization/generate_data_chart",
       formData
     );
+
+    console.log(response.data);
+
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        loading: true,
+        dataChart: response.data,
+      },
+    });
   };
 
   useEffect(() => {
@@ -98,7 +124,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
   }, []);
 
   return (
-    <>
+    <div className="space-y-3">
       <div className="w-full grid grid-cols-12 gap-4">
         <div className="col-span-2">
           <Select
@@ -122,35 +148,17 @@ function DataVisualization({ file }: DataVisualizationProps) {
           <Select
             id="xColumnsSelect"
             label="X-Columns"
-            multiple={sectionData.data.typeChart === "barChart" && false}
+            multiple={false}
             options={sectionData.data.columns}
             value={sectionData.data.xColumns}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              if (sectionData.data.typeChart === "barChart") {
-                setSectionData({
-                  ...sectionData,
-                  data: {
-                    ...sectionData.data,
-                    xColumns: e.target.value,
-                  },
-                });
-              } else {
-                const options = e.target.options;
-
-                const newXColumnsSelected = [];
-                for (let i = 0; i < options.length; i++) {
-                  if (options[i].selected)
-                    newXColumnsSelected.push(options[i].value);
-                }
-
-                setSectionData({
-                  ...sectionData,
-                  data: {
-                    ...sectionData.data,
-                    xColumns: newXColumnsSelected,
-                  },
-                });
-              }
+              setSectionData({
+                ...sectionData,
+                data: {
+                  ...sectionData.data,
+                  xColumns: e.target.value,
+                },
+              });
             }}
           />
         </div>
@@ -158,23 +166,15 @@ function DataVisualization({ file }: DataVisualizationProps) {
           <Select
             id="yColumnSelect"
             label="Y-Column"
-            multiple={true}
+            multiple={false}
             options={sectionData.data.columns}
             value={sectionData.data.yColumns}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              const options = e.target.options;
-
-              const newYColumnsSelected = [];
-              for (let i = 0; i < options.length; i++) {
-                if (options[i].selected)
-                  newYColumnsSelected.push(options[i].value);
-              }
-
               setSectionData({
                 ...sectionData,
                 data: {
                   ...sectionData.data,
-                  yColumns: newYColumnsSelected,
+                  yColumns: e.target.value,
                 },
               });
             }}
@@ -186,7 +186,21 @@ function DataVisualization({ file }: DataVisualizationProps) {
         loading={sectionData.data.loadingService}
         serviceFunction={serviceFunction}
       />
-    </>
+
+      {sectionData.data.dataChart.length > 0 && (
+        <div>
+          {sectionData.data.typeChart === "barChart" && (
+            <BarChartWithoutLabels data={sectionData.data.dataChart} />
+          )}
+          {sectionData.data.typeChart === "lineChart" && (
+            <LineChartWithoutLabels data={sectionData.data.dataChart} />
+          )}
+          {sectionData.data.typeChart === "scatterPlot" && (
+            <ScatterPlotWithoutLabels data={sectionData.data.dataChart} />
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 

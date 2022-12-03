@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { handleError } from "../../../utils/notifications";
 import ButtonService from "../../button/ButtonService";
-import BarChart from "../../charts/BarChart";
+import BarChartWithLabels from "../../charts/BarChartWithLabels";
 import InformativeSummaryTable from "./InformativeSummaryTable";
 import InformativeSummaryTotalRowsColumns from "./InformativeSummaryTotalRowsColumns";
 
@@ -108,9 +108,17 @@ function InformativeSummary({ file }: Props) {
               </div>
 
               <div className="col-span-9">
-                <BarChart
-                  x={sectionData.data.data_bar_chart.x}
-                  y={sectionData.data.data_bar_chart.y}
+                <BarChartWithLabels
+                  data={[
+                    {
+                      x: sectionData.data.data_bar_chart.x,
+                      y: sectionData.data.data_bar_chart.y,
+                      type: "bar",
+                    },
+                  ]}
+                  title="Frequency of column data types"
+                  xLabel="Data Types"
+                  yLabel="Frequency"
                 />
               </div>
             </div>
