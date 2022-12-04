@@ -149,7 +149,7 @@ function DescriptiveStatistics({ file }: Props) {
         />
 
         {dataChart.loading && <LoadingChart />}
-        <div>
+        <div className="h-[500px]">
           {options.selectedTypeChart === "histogram" && (
             <HistogramWithoutLabels data={dataChart.data} />
           )}

@@ -4,6 +4,7 @@ import { handleError } from "../../../utils/notifications";
 import BarChartWithLabels from "../../charts/BarChartWithLabels";
 import InformativeSummaryTable from "./InformativeSummaryTable";
 import InformativeSummaryTotalRowsColumns from "./InformativeSummaryTotalRowsColumns";
+import LoadingChart from "../../utils/LoadingChart";
 
 interface Props {
   file: File;
@@ -88,6 +89,8 @@ function InformativeSummary({ file }: Props) {
 
   return (
     <div>
+      {sectionData.loading && <LoadingChart />}
+
       {sectionData.showData && (
         <div className="space-y-3">
           <div className="space-y-2">
