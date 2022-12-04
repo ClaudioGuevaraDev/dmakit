@@ -2,16 +2,17 @@ import Plot from "react-plotly.js";
 
 interface Props {
 	data: Object[];
+	showLegend: boolean;
 }
 
-function BoxPlotWithoutLabels({ data }: Props) {
+function BoxPlotWithoutLabels({ data, showLegend }: Props) {
 	return (
 		<Plot
 			data={data}
 			layout={{
 				height: 500,
 				autosize: true,
-				showlegend: true,
+				showlegend: showLegend,
 			}}
 			config={{
 				displayModeBar: false,

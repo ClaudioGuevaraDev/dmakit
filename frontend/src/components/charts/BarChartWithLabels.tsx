@@ -5,9 +5,16 @@ interface Props {
   title: string;
   xLabel: string;
   yLabel: string;
+  showLegend: boolean;
 }
 
-function BarChartWithLabels({ data, title, xLabel, yLabel }: Props) {
+function BarChartWithLabels({
+  data,
+  title,
+  xLabel,
+  yLabel,
+  showLegend,
+}: Props) {
   return (
     <Plot
       data={data}
@@ -19,7 +26,7 @@ function BarChartWithLabels({ data, title, xLabel, yLabel }: Props) {
             size: 20,
           },
         },
-        showlegend: true,
+        showlegend: showLegend,
         xaxis: {
           title: xLabel,
         },

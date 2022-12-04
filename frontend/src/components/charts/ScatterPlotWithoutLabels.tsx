@@ -2,16 +2,20 @@ import Plot from "react-plotly.js";
 
 interface ScatterPlotWithoutLabelsProps {
   data: any[];
+  showLegend: boolean;
 }
 
-function ScatterPlotWithoutLabels({ data }: ScatterPlotWithoutLabelsProps) {
+function ScatterPlotWithoutLabels({
+  data,
+  showLegend,
+}: ScatterPlotWithoutLabelsProps) {
   return (
     <Plot
       data={data}
       layout={{
         height: 500,
         autosize: true,
-        showlegend: true,
+        showlegend: showLegend,
       }}
       config={{
         displayModeBar: false,

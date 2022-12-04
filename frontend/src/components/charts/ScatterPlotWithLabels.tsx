@@ -5,6 +5,7 @@ interface ScatterPlotWithLabelsProps {
   title: string;
   xLabel: string;
   yLabel: string;
+  showLegend: boolean;
 }
 
 function ScatterPlotWithLabels({
@@ -12,6 +13,7 @@ function ScatterPlotWithLabels({
   title,
   xLabel,
   yLabel,
+  showLegend,
 }: ScatterPlotWithLabelsProps) {
   return (
     <Plot
@@ -24,7 +26,7 @@ function ScatterPlotWithLabels({
             size: 20,
           },
         },
-        showlegend: true,
+        showlegend: showLegend,
         xaxis: {
           title: xLabel,
         },

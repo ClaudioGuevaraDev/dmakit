@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { handleError } from "../../../utils/notifications";
-import ButtonService from "../../button/ButtonService";
 import BarChartWithLabels from "../../charts/BarChartWithLabels";
 import InformativeSummaryTable from "./InformativeSummaryTable";
 import InformativeSummaryTotalRowsColumns from "./InformativeSummaryTotalRowsColumns";
@@ -83,13 +82,12 @@ function InformativeSummary({ file }: Props) {
     }
   };
 
+  useEffect(() => {
+    informativeSummaryInfo();
+  }, [file]);
+
   return (
     <div>
-      <ButtonService
-        loading={sectionData.loading}
-        serviceFunction={informativeSummaryInfo}
-      />
-
       {sectionData.showData && (
         <div className="space-y-3">
           <div className="space-y-2">
@@ -119,6 +117,7 @@ function InformativeSummary({ file }: Props) {
                   title="Frequency of column data types"
                   xLabel="Data Types"
                   yLabel="Frequency"
+                  showLegend={false}
                 />
               </div>
             </div>

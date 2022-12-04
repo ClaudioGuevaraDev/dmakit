@@ -2,7 +2,7 @@ import { descriptiveStatisticsTypeCharts } from "../../../utils/options";
 import { descriptiveStatisticsOptions } from "../../../interfaces/descriptiveStatistics";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import Select from "../../select";
-import LoadingColumns from "./LoadingColumns";
+import LoadingColumns from "../../utils/LoadingColumns";
 
 interface Props {
 	options: descriptiveStatisticsOptions;

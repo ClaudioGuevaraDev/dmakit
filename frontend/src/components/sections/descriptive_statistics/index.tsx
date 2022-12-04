@@ -10,7 +10,7 @@ import { descriptiveStatisticsTypeCharts } from "../../../utils/options";
 import DescriptiveStatisticsTable from "./DescriptiveStatisticsTable";
 import HistogramWithoutLabels from "../../charts/HistogramWithoutLabels";
 import DescriptiveStatisticsOptions from "./DescriptiveStatisticsOptions";
-import LoadingChart from "./LoadingChart";
+import LoadingChart from "../../utils/LoadingChart";
 import BoxPlotWithoutLabels from "../../charts/BoxPlotWithoutLabels";
 
 interface Props {

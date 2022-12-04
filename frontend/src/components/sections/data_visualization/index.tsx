@@ -1,9 +1,8 @@
 import axios from "axios";
-import { ChangeEvent, useEffect, useState, useRef, useCallback } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Option } from "../../../interfaces/select";
 import { handleError } from "../../../utils/notifications";
 import { typeChartsOptions } from "../../../utils/options";
-import ButtonService from "../../button/ButtonService";
 import BarChartWithLabels from "../../charts/BarChartWithLabels";
 import BarChartWithoutLabels from "../../charts/BarChartWithoutLabels";
 import LineChartWithLabels from "../../charts/LineChartWithLabels";
@@ -12,7 +11,8 @@ import ScatterPlotWithLabels from "../../charts/ScatterPlotWithLabels";
 import ScatterPlotWithoutLabels from "../../charts/ScatterPlotWithoutLabels";
 import InputField from "../../input_field";
 import Select from "../../select";
-import { toPng } from "html-to-image";
+import LoadingColumns from "../../utils/LoadingColumns";
+import LoadingChart from "../../utils/LoadingChart";
 
 interface DataVisualizationProps {
   file: File;
@@ -56,8 +56,6 @@ function DataVisualization({ file }: DataVisualizationProps) {
     loading: false,
     showData: false,
   });
-
-  const containerChart = useRef<HTMLDivElement>(null);
 
   const dataVisualizationInfo = async () => {
     setSectionData({
@@ -109,34 +107,56 @@ function DataVisualization({ file }: DataVisualizationProps) {
       },
     });
 
-    const postData = JSON.stringify({
-      xColumn: sectionData.data.xColumns,
-      yColumn: sectionData.data.yColumns,
-      typeChart: sectionData.data.typeChart,
-    });
+    try {
+      const postData = JSON.stringify({
+        xColumn: sectionData.data.xColumns,
+        yColumn: sectionData.data.yColumns,
+        typeChart: sectionData.data.typeChart,
+      });
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("data", postData);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("data", postData);
 
-    const response = await axios.post(
-      "http://localhost:4000/api/data_visualization/generate_data_chart",
-      formData
-    );
+      const response = await axios.post(
+        "http://localhost:4000/api/data_visualization/generate_data_chart",
+        formData
+      );
 
-    setSectionData({
-      ...sectionData,
-      data: {
-        ...sectionData.data,
-        loading: true,
-        dataChart: response.data,
-      },
-    });
+      setSectionData({
+        ...sectionData,
+        data: {
+          ...sectionData.data,
+          loading: false,
+          dataChart: response.data,
+        },
+      });
+    } catch (error: any) {
+      handleError(error.response.data.message);
+
+      setSectionData({
+        ...sectionData,
+        data: {
+          ...sectionData.data,
+          loading: false,
+          dataChart: [],
+        },
+      });
+    }
   };
 
   useEffect(() => {
     dataVisualizationInfo();
   }, []);
+
+  useEffect(() => {
+    if (sectionData.data.xColumns !== "" && sectionData.data.yColumns !== "")
+      serviceFunction();
+  }, [
+    sectionData.data.typeChart,
+    sectionData.data.xColumns,
+    sectionData.data.yColumns,
+  ]);
 
   const closeModal = () => {
     setSectionData({
@@ -178,42 +198,6 @@ function DataVisualization({ file }: DataVisualizationProps) {
     });
   };
 
-  const handlePng = useCallback(() => {
-    if (containerChart.current === null) return;
-
-    toPng(containerChart.current, { cacheBust: true })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "chart.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        handleError("Error downloading chart");
-      });
-  }, [containerChart]);
-
-  const downloadChart = () => {
-    setSectionData({
-      ...sectionData,
-      data: {
-        ...sectionData.data,
-        showChartLabels: true,
-      },
-    });
-
-    handlePng()
-
-    setSectionData({
-      ...sectionData,
-      data: {
-        ...sectionData.data,
-        showChartLabels: false,
-        showModal: false
-      },
-    });    
-  }
-
   return (
     <>
       <div className="space-y-3">
@@ -237,51 +221,55 @@ function DataVisualization({ file }: DataVisualizationProps) {
             />
           </div>
           <div className="col-span-2">
-            <Select
-              id="xColumnsSelect"
-              label="X-Columns"
-              multiple={false}
-              options={sectionData.data.columns}
-              value={sectionData.data.xColumns}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                setSectionData({
-                  ...sectionData,
-                  data: {
-                    ...sectionData.data,
-                    xColumns: e.target.value,
-                  },
-                });
-              }}
-            />
+            {sectionData.loading ? (
+              <LoadingColumns />
+            ) : (
+              <Select
+                id="xColumnsSelect"
+                label="X-Columns"
+                multiple={false}
+                options={sectionData.data.columns}
+                value={sectionData.data.xColumns}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  setSectionData({
+                    ...sectionData,
+                    data: {
+                      ...sectionData.data,
+                      xColumns: e.target.value,
+                    },
+                  });
+                }}
+              />
+            )}
           </div>
-          <div className="col-span-2">
-            <Select
-              id="yColumnSelect"
-              label="Y-Column"
-              multiple={false}
-              options={sectionData.data.columns}
-              value={sectionData.data.yColumns}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                setSectionData({
-                  ...sectionData,
-                  data: {
-                    ...sectionData.data,
-                    yColumns: e.target.value,
-                  },
-                });
-              }}
-            />
-          </div>
+          {sectionData.loading ? (
+            <LoadingColumns />
+          ) : (
+            <div className="col-span-2">
+              <Select
+                id="yColumnSelect"
+                label="Y-Column"
+                multiple={false}
+                options={sectionData.data.columns}
+                value={sectionData.data.yColumns}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  setSectionData({
+                    ...sectionData,
+                    data: {
+                      ...sectionData.data,
+                      yColumns: e.target.value,
+                    },
+                  });
+                }}
+              />
+            </div>
+          )}
         </div>
-
-        <ButtonService
-          loading={sectionData.data.loadingService}
-          serviceFunction={serviceFunction}
-        />
 
         {sectionData.data.dataChart.length > 0 && (
           <>
-            <div ref={containerChart}>
+            {sectionData.data.loading === true && <LoadingChart />}
+            <div>
               {sectionData.data.typeChart === "barChart" &&
                 sectionData.data.showChartLabels === true && (
                   <BarChartWithLabels
@@ -289,11 +277,15 @@ function DataVisualization({ file }: DataVisualizationProps) {
                     title={sectionData.data.chartTitle}
                     xLabel={sectionData.data.chartXLabel}
                     yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
                   />
                 )}
               {sectionData.data.typeChart === "barChart" &&
                 sectionData.data.showChartLabels === false && (
-                  <BarChartWithoutLabels data={sectionData.data.dataChart} />
+                  <BarChartWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
                 )}
               {sectionData.data.typeChart === "lineChart" &&
                 (sectionData.data.showChartLabels ? (
@@ -302,9 +294,13 @@ function DataVisualization({ file }: DataVisualizationProps) {
                     title={sectionData.data.chartTitle}
                     xLabel={sectionData.data.chartXLabel}
                     yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
                   />
                 ) : (
-                  <LineChartWithoutLabels data={sectionData.data.dataChart} />
+                  <LineChartWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
                 ))}
               {sectionData.data.typeChart === "scatterPlot" &&
                 (sectionData.data.showChartLabels ? (
@@ -313,9 +309,13 @@ function DataVisualization({ file }: DataVisualizationProps) {
                     title={sectionData.data.chartTitle}
                     xLabel={sectionData.data.chartXLabel}
                     yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
                   />
                 ) : (
-                  <ScatterPlotWithoutLabels data={sectionData.data.dataChart} />
+                  <ScatterPlotWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
                 ))}
             </div>
 
@@ -405,7 +405,6 @@ function DataVisualization({ file }: DataVisualizationProps) {
                 data-modal-toggle="defaultModal"
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                onClick={downloadChart}
               >
                 Download
               </button>

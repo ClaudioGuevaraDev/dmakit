@@ -5,6 +5,7 @@ interface LineChartWithLabelsProps {
   title: string;
   xLabel: string;
   yLabel: string;
+  showLegend: boolean;
 }
 
 function LineChartWithLabels({
@@ -12,6 +13,7 @@ function LineChartWithLabels({
   title,
   xLabel,
   yLabel,
+  showLegend,
 }: LineChartWithLabelsProps) {
   return (
     <Plot
@@ -24,7 +26,7 @@ function LineChartWithLabels({
             size: 20,
           },
         },
-        showlegend: true,
+        showlegend: showLegend,
         xaxis: {
           title: xLabel,
         },

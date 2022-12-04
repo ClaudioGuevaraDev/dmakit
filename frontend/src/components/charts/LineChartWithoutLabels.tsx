@@ -2,16 +2,20 @@ import Plot from "react-plotly.js";
 
 interface LineChartWithoutLabelsProps {
   data: any[];
+  showLegend: boolean;
 }
 
-function LineChartWithoutLabels({ data }: LineChartWithoutLabelsProps) {
+function LineChartWithoutLabels({
+  data,
+  showLegend,
+}: LineChartWithoutLabelsProps) {
   return (
     <Plot
       data={data}
       layout={{
         height: 500,
         autosize: true,
-        showlegend: true,
+        showlegend: showLegend,
       }}
       config={{
         displayModeBar: false,

@@ -21,7 +21,7 @@ def informative_summary_info():
 
             dtypes.append({
                 "column": column,
-                "type": type_column
+                "type": type_column,
             })
 
             total_type_columns.append(type_column)
