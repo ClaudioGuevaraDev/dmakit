@@ -27,7 +27,7 @@
     - [ ] También debe permitir agrupar o plotear con respecto a algo:
         - [ ] Scatter plot de A v/s B coloreado por columna C
 - [ ] Estadísticas descriptivas
-    - [ ] Se contempla una tabla resumen de los atributos continuos con los estadísticos básicos
+    - [x] Se contempla una tabla resumen de los atributos continuos con los estadísticos básicos
     - [ ] Se contempla plot estadísticos
         - [ ] Histogramas
         - [ ] Boxplots
