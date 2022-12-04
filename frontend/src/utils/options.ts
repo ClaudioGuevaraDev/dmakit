@@ -21,6 +21,10 @@ export const vectorialServicesOptions: Option[] = [
     value: "dataVisualization",
     label: "Data Visualization",
   },
+  {
+    value: "descriptiveStatistics",
+    label: "Descriptive Statistics"
+  }
 ];
 
 export const graphsServicesOptions: Option[] = [

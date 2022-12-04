@@ -5,6 +5,7 @@ import { HeaderOptions } from "./interfaces/header";
 import InformativeSummary from "./components/sections/informative_summary";
 import { ToastContainer } from "react-toastify";
 import DataVisualization from "./components/sections/data_visualization";
+import DescriptiveStatistics from "./components/sections/descriptive_statistics";
 
 function App() {
   const [section, setSection] = useState<string>("informativeSummary");
@@ -29,6 +30,10 @@ function App() {
 
         {section === "dataVisualization" && headerOptions.file && (
           <DataVisualization file={headerOptions.file} />
+        )}
+
+        {section === "descriptiveStatistics" && headerOptions.file && (
+          <DescriptiveStatistics file={headerOptions.file} />
         )}
       </div>
 
