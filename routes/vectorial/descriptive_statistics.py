@@ -25,7 +25,12 @@ def return_columns():
     try:
         df = pd.read_csv(request.files.get("file"))
 
-        columns = df.columns.to_list()
+        columns = []
+        for column in df.columns:
+            columns.append({
+                "value": column,
+                "label": column
+            })
 
         response = {"columns": columns}
 
@@ -34,15 +39,4 @@ def return_columns():
         response = {"message": "Error processing the file"}
 
         return jsonify(response), 500
-
-@router.post("/generate_histogram")
-def generate_histogram():
-    try:
-        df = pd.read_csv(request.files.get("file"))
-
-        return ""
-    except Exception as error:
-        print(error)
-        response = {"message": "Error when generating the graph"}
-
-        return jsonify(response), 500
+    

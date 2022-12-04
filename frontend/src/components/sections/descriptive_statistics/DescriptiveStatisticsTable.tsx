@@ -6,7 +6,7 @@ interface Props {
 
 function DescriptiveStatisticsTable({ summary }: Props) {
   return (
-    <>
+    <div>
       {summary.loading === true ? (
         <div className="flex justify-center items-center w-full h-96 bg-gray-300 rounded" />
       ) : (
@@ -33,8 +33,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     count
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["count"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["count"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -44,8 +46,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     min
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["min"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["min"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -55,8 +59,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     25%
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["25%"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["25%"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -66,8 +72,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     50%
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["50%"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["50%"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -77,8 +85,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     75%
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["75%"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["75%"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -88,8 +98,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     max
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["max"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["max"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -99,8 +111,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     mean
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["mean"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["mean"]}
+                    </td>
                   ))}
                 </tr>
                 <tr className="bg-white border-b hover:bg-gray-50">
@@ -110,8 +124,10 @@ function DescriptiveStatisticsTable({ summary }: Props) {
                   >
                     std
                   </th>
-                  {Object.entries(summary.data).map((column) => (
-                    <td className="py-4 px-6">{column[1]["std"]}</td>
+                  {Object.entries(summary.data).map((column, index) => (
+                    <td key={index} className="py-4 px-6">
+                      {column[1]["std"]}
+                    </td>
                   ))}
                 </tr>
               </tbody>
@@ -119,7 +135,7 @@ function DescriptiveStatisticsTable({ summary }: Props) {
           </div>
         )
       )}
-    </>
+    </div>
   );
 }
 

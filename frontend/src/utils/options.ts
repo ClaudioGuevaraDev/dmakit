@@ -23,8 +23,8 @@ export const vectorialServicesOptions: Option[] = [
   },
   {
     value: "descriptiveStatistics",
-    label: "Descriptive Statistics"
-  }
+    label: "Descriptive Statistics",
+  },
 ];
 
 export const graphsServicesOptions: Option[] = [
@@ -55,5 +55,17 @@ export const typeChartsOptions: Option[] = [
   {
     value: "scatterPlot",
     label: "Scatter Plot",
+  },
+];
+
+// Descriptive Statistics
+export const descriptiveStatisticsTypeCharts: Option[] = [
+  {
+    value: "histogram",
+    label: "Histogram",
+  },
+  {
+    value: "boxPlot",
+    label: "BoxPlots",
   },
 ];
