@@ -3,11 +3,15 @@ import { useEffect, useState, ChangeEvent } from "react";
 import {
   descriptiveStatisticsOptions,
   SummaryProps,
+  descriptiveStatisticsChart,
 } from "../../../interfaces/descriptiveStatistics";
 import { handleError } from "../../../utils/notifications";
 import { descriptiveStatisticsTypeCharts } from "../../../utils/options";
-import Select from "../../select";
 import DescriptiveStatisticsTable from "./DescriptiveStatisticsTable";
+import HistogramWithoutLabels from "../../charts/HistogramWithoutLabels";
+import DescriptiveStatisticsOptions from "./DescriptiveStatisticsOptions";
+import LoadingChart from "./LoadingChart";
+import BoxPlotWithoutLabels from "../../charts/BoxPlotWithoutLabels";
 
 interface Props {
   file: File;
@@ -22,7 +26,11 @@ function DescriptiveStatistics({ file }: Props) {
     columns: [],
     loading: true,
     selectedTypeChart: descriptiveStatisticsTypeCharts[0].value,
-    selectedColumnHistogramBoxPlot: [],
+    selectedColumnsHistogramBoxPlot: [],
+  });
+  const [dataChart, setDataChart] = useState<descriptiveStatisticsChart>({
+    loading: true,
+    data: [],
   });
 
   const getSummary = async () => {
@@ -74,7 +82,7 @@ function DescriptiveStatistics({ file }: Props) {
         ...options,
         columns: response.data.columns,
         loading: false,
-        selectedColumnHistogramBoxPlot: [response.data.columns[0].value],
+        selectedColumnsHistogramBoxPlot: [response.data.columns[0].value],
       });
     } catch (error: any) {
       handleError(error.response.data.message);
@@ -88,18 +96,36 @@ function DescriptiveStatistics({ file }: Props) {
   };
 
   const generateDataChart = async () => {
+    setDataChart({
+      ...dataChart,
+      loading: true,
+    });
+
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("typeChart", options.selectedTypeChart);
+      formData.append(
+        "selectedColumnsHistogramBoxPlot",
+        JSON.stringify(options.selectedColumnsHistogramBoxPlot)
+      );
 
       const response = await axios.post(
         "http://localhost:4000/api/descriptive_statistics/generate_data_chart",
         formData
       );
 
-      console.log(response);
+      setDataChart({
+        loading: false,
+        data: response.data.data_chart,
+      });
     } catch (error: any) {
       handleError(error.response.data.message);
+
+      setDataChart({
+        loading: false,
+        data: [],
+      });
     }
   };
 
@@ -109,56 +135,26 @@ function DescriptiveStatistics({ file }: Props) {
   }, [file]);
 
   useEffect(() => {
-    if (options.selectedColumnHistogramBoxPlot.length > 0) generateDataChart();
-  }, [options.selectedColumnHistogramBoxPlot]);
+    if (options.selectedColumnsHistogramBoxPlot.length > 0) generateDataChart();
+  }, [options.selectedColumnsHistogramBoxPlot, options.selectedTypeChart]);
 
   return (
     <>
       <div className="space-y-3">
         <DescriptiveStatisticsTable summary={summary} />
 
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-2">
-            <Select
-              label="Type Chart"
-              id="typeChart"
-              multiple={false}
-              options={descriptiveStatisticsTypeCharts}
-              value={options.selectedTypeChart}
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                setOptions({
-                  ...options,
-                  selectedTypeChart: e.target.value,
-                });
-              }}
-            />
-          </div>
-          {(options.selectedTypeChart === "histogram" ||
-            options.selectedTypeChart === "boxPlot") && (
-            <div className="col-span-2">
-              <Select
-                id="columns"
-                label="Select Columns"
-                multiple={true}
-                options={options.columns}
-                value={options.selectedColumnHistogramBoxPlot}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  const optionsSelect = e.target.options;
+        <DescriptiveStatisticsOptions
+          options={options}
+          setOptions={setOptions}
+        />
 
-                  const columnsSelected: string[] = [];
-                  for (let option of optionsSelect) {
-                    if (optionsSelect[option.index].selected) {
-                      columnsSelected.push(option.value);
-                    }
-                  }
-
-                  setOptions({
-                    ...options,
-                    selectedColumnHistogramBoxPlot: columnsSelected,
-                  });
-                }}
-              />
-            </div>
+        {dataChart.loading && <LoadingChart />}
+        <div>
+          {options.selectedTypeChart === "histogram" && (
+            <HistogramWithoutLabels data={dataChart.data} />
+          )}
+          {options.selectedTypeChart === "boxPlot" && (
+            <BoxPlotWithoutLabels data={dataChart.data} />
           )}
         </div>
       </div>

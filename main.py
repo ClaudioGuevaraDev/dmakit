@@ -24,7 +24,7 @@ app.register_blueprint(blueprint=data_visualization.router, url_prefix="/api/dat
 app.register_blueprint(blueprint=descriptive_statistics.router, url_prefix="/api/descriptive_statistics")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=4000, debug=True)
-    #FlaskUI(app=app, port=4000, server="flask").run()
+    #app.run(host="0.0.0.0", port=4000, debug=True)
+    FlaskUI(app=app, port=4000, server="flask").run()
 
 # pyinstaller --add-data "frontend/dist;frontend/dist" --noconsole --noconfirm main.py

@@ -11,6 +11,7 @@ function BarChartWithoutLabels({ data }: BarChartWithoutLabelsProps) {
       layout={{
         height: 500,
         autosize: true,
+        showlegend: true,
       }}
       config={{
         displayModeBar: false,

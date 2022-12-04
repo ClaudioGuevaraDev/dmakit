@@ -10,7 +10,8 @@
 
 - Visualización de datos y resumen de información
     - [x] Se debe permitir generar un resumen de la cantidad de datos en términos de filas y columnas 
-    - [x] Se debe generar un resumen de los tipos de datos
+    - [x] Se debe genera
+    r un resumen de los tipos de datos
     - [x] Se debe hacer histogramas y gráficos de frecuencia dependiendo sea el tipo
 - Plots y visualización
     - [ ] La idea es habilitar una herramienta de plots, contemplando los siguientes:
@@ -29,8 +30,8 @@
 - [ ] Estadísticas descriptivas
     - [x] Se contempla una tabla resumen de los atributos continuos con los estadísticos básicos
     - [ ] Se contempla plot estadísticos
-        - [ ] Histogramas
-        - [ ] Boxplots
+        - [x] Histogramas
+        - [x] Boxplots
         - [ ] Heatmap
     - [ ] Debe permitir hacer análisis de correlación
         - [ ] Correlaciones simples

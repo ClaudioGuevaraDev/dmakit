@@ -11,6 +11,7 @@ function LineChartWithoutLabels({ data }: LineChartWithoutLabelsProps) {
       layout={{
         height: 500,
         autosize: true,
+        showlegend: true,
       }}
       config={{
         displayModeBar: false,

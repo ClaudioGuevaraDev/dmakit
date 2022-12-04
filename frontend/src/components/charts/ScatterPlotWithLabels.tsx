@@ -24,6 +24,7 @@ function ScatterPlotWithLabels({
             size: 20,
           },
         },
+        showlegend: true,
         xaxis: {
           title: xLabel,
         },

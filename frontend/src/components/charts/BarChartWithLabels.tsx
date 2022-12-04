@@ -19,6 +19,7 @@ function BarChartWithLabels({ data, title, xLabel, yLabel }: Props) {
             size: 20,
           },
         },
+        showlegend: true,
         xaxis: {
           title: xLabel,
         },

@@ -9,5 +9,10 @@ export interface descriptiveStatisticsOptions {
   loading: boolean;
   columns: Option[];
   selectedTypeChart: string;
-  selectedColumnHistogramBoxPlot: any[];
+  selectedColumnsHistogramBoxPlot: any[];
+}
+
+export interface descriptiveStatisticsChart {
+  loading: boolean;
+  data: Object[];
 }
