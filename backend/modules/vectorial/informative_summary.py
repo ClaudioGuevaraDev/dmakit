@@ -1,23 +1,20 @@
+"""Informative summary module"""
 import pandas as pd
 
-from flask import Blueprint, request, jsonify
+class InformativeSummary:
+    """Informative Summary class"""
+    def informative_summary_info(self, request):
+        """Informative summary info"""
+        data = pd.read_csv(request.files.get("file"))
 
-router = Blueprint('informative_summary', __name__)
-
-
-@router.post('/')
-def informative_summary_info():
-    try:
-        df = pd.read_csv(request.files.get("file"))
-
-        total_rows = df.shape[0]
-        total_columns = df.shape[1]
+        total_rows = data.shape[0]
+        total_columns = data.shape[1]
 
         dtypes = []
         total_type_columns = []
         unique_type_columns = []
-        for column in df.columns:
-            type_column = str(df[column].dtype)
+        for column in data.columns:
+            type_column = str(data[column].dtype)
 
             dtypes.append({
                 "column": column,
@@ -26,7 +23,7 @@ def informative_summary_info():
 
             total_type_columns.append(type_column)
 
-            if not type_column in unique_type_columns:
+            if type_column not in unique_type_columns:
                 unique_type_columns.append(type_column)
 
         count_types_columns = []
@@ -42,11 +39,4 @@ def informative_summary_info():
                 "y": count_types_columns
             }
         }
-
-        return jsonify(response), 200
-    except:
-        response = {
-            "message": "Error processing the file"
-        }
-
-        return jsonify(response), 500
+        return response
