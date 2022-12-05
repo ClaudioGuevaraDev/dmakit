@@ -151,10 +151,10 @@ function DescriptiveStatistics({ file }: Props) {
         {dataChart.loading && <LoadingChart />}
         <div className="h-[500px]">
           {options.selectedTypeChart === "histogram" && (
-            <HistogramWithoutLabels data={dataChart.data} />
+            <HistogramWithoutLabels data={dataChart.data} showLegend={true} />
           )}
           {options.selectedTypeChart === "boxPlot" && (
-            <BoxPlotWithoutLabels data={dataChart.data} />
+            <BoxPlotWithoutLabels data={dataChart.data} showLegend={true} />
           )}
         </div>
       </div>

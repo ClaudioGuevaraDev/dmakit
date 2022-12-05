@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useRef } from "react";
 import { Option } from "../../../interfaces/select";
 import { handleError } from "../../../utils/notifications";
 import { typeChartsOptions } from "../../../utils/options";
@@ -13,6 +13,8 @@ import InputField from "../../input_field";
 import Select from "../../select";
 import LoadingColumns from "../../utils/LoadingColumns";
 import LoadingChart from "../../utils/LoadingChart";
+import html2canvas from "html2canvas";
+import LoadingButton from "../../buttons/LoadingButton";
 
 interface DataVisualizationProps {
   file: File;
@@ -34,6 +36,7 @@ interface SectionData {
     chartXLabel: string;
     chartYLabel: string;
     showChartLabels: boolean;
+    loadingButton: boolean;
   };
 }
 
@@ -52,10 +55,13 @@ function DataVisualization({ file }: DataVisualizationProps) {
       chartXLabel: "",
       chartYLabel: "",
       showChartLabels: false,
+      loadingButton: false,
     },
     loading: false,
     showData: false,
   });
+
+  const containerChart = useRef<HTMLDivElement>(null);
 
   const dataVisualizationInfo = async () => {
     setSectionData({
@@ -147,7 +153,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
 
   useEffect(() => {
     dataVisualizationInfo();
-  }, []);
+  }, [file]);
 
   useEffect(() => {
     if (sectionData.data.xColumns !== "" && sectionData.data.yColumns !== "")
@@ -196,6 +202,49 @@ function DataVisualization({ file }: DataVisualizationProps) {
         chartYLabel: e.target.value,
       },
     });
+  };
+
+  const downloadChartToPng = async () => {
+    if (containerChart.current === null) return;
+
+    const canvas = await html2canvas(containerChart.current);
+    const image = canvas.toDataURL("image/png", 1.0);
+
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "chart.png";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        showChartLabels: false,
+        showModal: false,
+        chartTitle: "",
+        chartXLabel: "",
+        chartYLabel: "",
+        loadingButton: false,
+      },
+    });
+  };
+
+  const downloadChart = () => {
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        showChartLabels: true,
+        loadingButton: true,
+      },
+    });
+
+    setTimeout(() => {
+      downloadChartToPng();
+    }, 1000);
   };
 
   return (
@@ -266,12 +315,13 @@ function DataVisualization({ file }: DataVisualizationProps) {
           )}
         </div>
 
+        {sectionData.data.loading === true && <LoadingChart />}
+
         {sectionData.data.dataChart.length > 0 && (
           <>
-            {sectionData.data.loading === true && <LoadingChart />}
-            <div>
+            <div ref={containerChart}>
               {sectionData.data.typeChart === "barChart" &&
-                sectionData.data.showChartLabels === true && (
+                (sectionData.data.showChartLabels ? (
                   <BarChartWithLabels
                     data={sectionData.data.dataChart}
                     title={sectionData.data.chartTitle}
@@ -279,14 +329,12 @@ function DataVisualization({ file }: DataVisualizationProps) {
                     yLabel={sectionData.data.chartYLabel}
                     showLegend={true}
                   />
-                )}
-              {sectionData.data.typeChart === "barChart" &&
-                sectionData.data.showChartLabels === false && (
+                ) : (
                   <BarChartWithoutLabels
                     data={sectionData.data.dataChart}
                     showLegend={true}
                   />
-                )}
+                ))}
               {sectionData.data.typeChart === "lineChart" &&
                 (sectionData.data.showChartLabels ? (
                   <LineChartWithLabels
@@ -319,7 +367,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
                 ))}
             </div>
 
-            {/* <button
+            <button
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
               onClick={() => {
@@ -333,7 +381,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
               }}
             >
               Download Chart
-            </button> */}
+            </button>
           </>
         )}
       </div>
@@ -401,13 +449,18 @@ function DataVisualization({ file }: DataVisualizationProps) {
               />
             </div>
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                data-modal-toggle="defaultModal"
-                type="button"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                Download
-              </button>
+              {sectionData.data.loadingButton ? (
+                <LoadingButton title="Downloading..." />
+              ) : (
+                <button
+                  data-modal-toggle="defaultModal"
+                  type="button"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  onClick={downloadChart}
+                >
+                  Download
+                </button>
+              )}
               <button
                 data-modal-toggle="defaultModal"
                 type="button"
