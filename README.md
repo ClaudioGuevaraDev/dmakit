@@ -8,12 +8,12 @@
 
 ##### Vectoriales
 
-- Visualización de datos y resumen de información
+- [x] Visualización de datos y resumen de información
     - [x] Se debe permitir generar un resumen de la cantidad de datos en términos de filas y columnas 
     - [x] Se debe genera
     r un resumen de los tipos de datos
     - [x] Se debe hacer histogramas y gráficos de frecuencia dependiendo sea el tipo
-- Plots y visualización
+- [ ] Plots y visualización
     - [ ] La idea es habilitar una herramienta de plots, contemplando los siguientes:
         - [x] Gráficos de barra
         - [ ] Gráficos de torta
@@ -24,7 +24,7 @@
         - [ ] Bubble chart
         - [ ] Parallel coordinates
         - [ ] Spiderweb
-    - [ ] Para todos los plots se debe permitir guardar las figuras
+    - [x] Para todos los plots se debe permitir guardar las figuras
     - [ ] También debe permitir agrupar o plotear con respecto a algo:
         - [ ] Scatter plot de A v/s B coloreado por columna C
 - [ ] Estadísticas descriptivas
