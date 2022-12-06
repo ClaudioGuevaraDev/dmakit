@@ -4,6 +4,16 @@
 
 * **Comando para compilar a escritorio:** pyinstaller --add-data "frontend/dist;frontend/dist" --noconsole --noconfirm main.py
 
+#### Tareas para la semana del 05/12/2022 - 11/12/2022
+
+##### Plots y visualización
+- Terminar la api de los gráficos (torta, log, buble, parallel y el spiderweb)
+- Hacer una api para "Scatter plot de A v/s B coloreado por columna C"
+
+##### Estadísticas descriptivas
+- Terminar api para hacer el heatmap
+- Hacer api para análisis de correlación y mutual information
+
 #### Servicios
 
 ##### Vectoriales
