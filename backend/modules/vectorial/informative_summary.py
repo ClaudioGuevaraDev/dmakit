@@ -6,7 +6,7 @@ class InformativeSummary:
     def informative_summary_info(self, request):
         """Informative summary info"""
         data = pd.read_csv(request.files.get("file"))
-
+        
         total_rows = data.shape[0]
         total_columns = data.shape[1]
 

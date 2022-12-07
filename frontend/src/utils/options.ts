@@ -53,20 +53,32 @@ export const typeChartsOptions: Option[] = [
     label: "Pie Chart",
   },
   {
+    value: "scatterPlot",
+    label: "Scatter Plot",
+  },
+  {
     value: "logChart",
     label: "Log Chart",
   },
   {
-    value: "bubbleChart",
-    label: "Bubble Chart",
+    value: "3DPlot",
+    label: "3D Plot"
   },
   {
     value: "lineChart",
     label: "Line Chart",
   },
   {
-    value: "scatterPlot",
-    label: "Scatter Plot",
+    value: "bubbleChart",
+    label: "Bubble Chart",
+  },
+  {
+    value: "parallelCoordinates",
+    label: "Parallel Coordinates",
+  },
+  {
+    value: "radarPlot",
+    label: "Radar Plot",
   },
 ];
 

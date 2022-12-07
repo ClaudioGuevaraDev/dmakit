@@ -7,6 +7,7 @@ class DataVisualization:
     def data_visualization_info(self, request):
         """Gets columns for selects"""
         data = pd.read_csv(request.files.get("file"))
+        print(data)
         return {
             "columns": [
                 {"value": col, "label": col, "dtype": data[col].dtype.name}
@@ -118,6 +119,27 @@ class DataVisualization:
             }
         ]
 
+    def __radar_plot(self, selected_data, df_file):
+        """Requiere una columna"""
+        x_column = selected_data["xColumn"]
+        x_values = df_file[x_column]
+        res = self.__categorical_count(x_values)
+        return [{
+                "r": res[1],
+                "theta": res[0],
+                "type": "scatterpolar",
+                "name": x_column,
+                "fill": "toself"
+        }]
+
+    def __3d_plot(self, selected_data, df_file):
+        return []
+
+    
+    def __parallel_coordinates(self, selected_data, df_file):
+        return []
+
+
     def generate_data_chart(self, request):
         """Gets data chart depending data type"""
         df_file = pd.read_csv(request.files.get("file"))
@@ -128,14 +150,20 @@ class DataVisualization:
             data = self.__bar_chart(selected_data, df_file)
         elif type_chart == "pieChart":
             data = self.__pie_chart(selected_data, df_file)
-        elif type_chart == "logChart":
-            data = self.__log_chart(selected_data, df_file)
-        elif type_chart == "lineChart":
-            data = self.__line_chart(selected_data, df_file)
         elif type_chart == "scatterPlot":
             data = self.__scatter_plot(selected_data, df_file)
+        elif type_chart == "logChart":
+            data = self.__log_chart(selected_data, df_file)
+        elif type_chart == "3DPlot":
+            data = self.__3d_plot(selected_data, df_file)
+        elif type_chart == "lineChart":
+            data = self.__line_chart(selected_data, df_file)
         elif type_chart == "bubbleChart":
             data = self.__bubble_chart(selected_data, df_file)
+        elif type_chart == "parallel_coordinates":
+            data = self.__parallel_coordinates(selected_data, df_file)
+        elif type_chart == "radarPlot":
+            data = self.__radar_plot(selected_data, df_file)
         else:
             data = None
         return data

@@ -15,6 +15,8 @@ import ScatterPlotWithLabels from "../../charts/ScatterPlotWithLabels";
 import ScatterPlotWithoutLabels from "../../charts/ScatterPlotWithoutLabels";
 import PieChartWithLabels from "../../charts/PieChartWithLabels";
 import PieChartWithoutLabels from "../../charts/PieChartWithoutLabels";
+import RadarPlotWithLabels from "../../charts/RadarPlotWithLabels";
+import RadarPlotWithoutLabels from "../../charts/RadarPlotWithoutLabels";
 import InputField from "../../input_field";
 import Select from "../../select";
 import LoadingColumns from "../../utils/LoadingColumns";
@@ -454,6 +456,22 @@ function DataVisualization({ file }: DataVisualizationProps) {
                   />
                 ) : (
                   <PieChartWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
+                ))}
+
+                {sectionData.data.typeChart === "radarPlot" &&
+                (sectionData.data.showChartLabels ? (
+                  <RadarPlotWithLabels
+                    data={sectionData.data.dataChart}
+                    title={sectionData.data.chartTitle}
+                    xLabel={sectionData.data.chartXLabel}
+                    yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
+                  />
+                ) : (
+                  <RadarPlotWithoutLabels
                     data={sectionData.data.dataChart}
                     showLegend={true}
                   />
