@@ -7,8 +7,14 @@ import BarChartWithLabels from "../../charts/BarChartWithLabels";
 import BarChartWithoutLabels from "../../charts/BarChartWithoutLabels";
 import LineChartWithLabels from "../../charts/LineChartWithLabels";
 import LineChartWithoutLabels from "../../charts/LineChartWithoutLabels";
+import LogChartWithLabels from "../../charts/LogChartWithLabels";
+import LogChartWithoutLabels from "../../charts/LogChartWithoutLabels";
+import BubbleChartWithLabels from "../../charts/BubbleChartWithLabels";
+import BubbleChartWithoutLabels from "../../charts/BubbleChartWithoutLabels";
 import ScatterPlotWithLabels from "../../charts/ScatterPlotWithLabels";
 import ScatterPlotWithoutLabels from "../../charts/ScatterPlotWithoutLabels";
+import PieChartWithLabels from "../../charts/PieChartWithLabels";
+import PieChartWithoutLabels from "../../charts/PieChartWithoutLabels";
 import InputField from "../../input_field";
 import Select from "../../select";
 import LoadingColumns from "../../utils/LoadingColumns";
@@ -28,6 +34,7 @@ interface SectionData {
     columns: Option[];
     xColumns: string;
     yColumns: string;
+    zColumns: string;
     loadingService: boolean;
     dataChart: any[];
     loading: boolean;
@@ -35,6 +42,7 @@ interface SectionData {
     chartTitle: string;
     chartXLabel: string;
     chartYLabel: string;
+    chartZLabel: string;
     showChartLabels: boolean;
     loadingButton: boolean;
   };
@@ -47,6 +55,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
       columns: [],
       xColumns: "",
       yColumns: "",
+      zColumns: "",
       loadingService: false,
       dataChart: [],
       loading: false,
@@ -54,6 +63,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
       chartTitle: "",
       chartXLabel: "",
       chartYLabel: "",
+      chartZLabel: "",
       showChartLabels: false,
       loadingButton: false,
     },
@@ -91,6 +101,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
           columns: response.data.columns,
           xColumns: response.data.columns[0].value,
           yColumns: response.data.columns[0].value,
+          zColumns: response.data.columns[0].value,
         },
       });
     } catch (error: any) {
@@ -117,6 +128,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
       const postData = JSON.stringify({
         xColumn: sectionData.data.xColumns,
         yColumn: sectionData.data.yColumns,
+        zColumn: sectionData.data.zColumns,
         typeChart: sectionData.data.typeChart,
       });
 
@@ -156,12 +168,13 @@ function DataVisualization({ file }: DataVisualizationProps) {
   }, [file]);
 
   useEffect(() => {
-    if (sectionData.data.xColumns !== "" && sectionData.data.yColumns !== "")
+    if (sectionData.data.xColumns !== "" && sectionData.data.yColumns !== "" && sectionData.data.zColumns !== "")
       serviceFunction();
   }, [
     sectionData.data.typeChart,
     sectionData.data.xColumns,
     sectionData.data.yColumns,
+    sectionData.data.zColumns
   ]);
 
   const closeModal = () => {
@@ -199,7 +212,17 @@ function DataVisualization({ file }: DataVisualizationProps) {
       ...sectionData,
       data: {
         ...sectionData.data,
-        chartYLabel: e.target.value,
+        chartYLabel: e.target.value
+      },
+    });
+  };
+
+  const handleZLabel = (e: ChangeEvent<HTMLInputElement>) => {
+    setSectionData({
+      ...sectionData,
+      data: {
+        ...sectionData.data,
+        chartZLabel: e.target.value,
       },
     });
   };
@@ -227,6 +250,7 @@ function DataVisualization({ file }: DataVisualizationProps) {
         chartTitle: "",
         chartXLabel: "",
         chartYLabel: "",
+        chartZLabel: "",
         loadingButton: false,
       },
     });
@@ -313,6 +337,29 @@ function DataVisualization({ file }: DataVisualizationProps) {
               />
             </div>
           )}
+
+          {sectionData.loading ? (
+            <LoadingColumns />
+          ) : (
+            <div className="col-span-2">
+              <Select
+                id="zColumnSelect"
+                label="Z-Column"
+                multiple={false}
+                options={sectionData.data.columns}
+                value={sectionData.data.zColumns}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  setSectionData({
+                    ...sectionData,
+                    data: {
+                      ...sectionData.data,
+                      zColumns: e.target.value,
+                    },
+                  });
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {sectionData.data.loading === true && <LoadingChart />}
@@ -350,6 +397,37 @@ function DataVisualization({ file }: DataVisualizationProps) {
                     showLegend={true}
                   />
                 ))}
+              {sectionData.data.typeChart === "logChart" &&
+                (sectionData.data.showChartLabels ? (
+                  <LogChartWithLabels
+                    data={sectionData.data.dataChart}
+                    title={sectionData.data.chartTitle}
+                    xLabel={sectionData.data.chartXLabel}
+                    yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
+                  />
+                ) : (
+                  <LogChartWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
+                ))}
+
+              {sectionData.data.typeChart === "bubbleChart" &&
+                (sectionData.data.showChartLabels ? (
+                  <BubbleChartWithLabels
+                    data={sectionData.data.dataChart}
+                    title={sectionData.data.chartTitle}
+                    xLabel={sectionData.data.chartXLabel}
+                    yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
+                  />
+                ) : (
+                  <BubbleChartWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
+                ))}
               {sectionData.data.typeChart === "scatterPlot" &&
                 (sectionData.data.showChartLabels ? (
                   <ScatterPlotWithLabels
@@ -361,6 +439,21 @@ function DataVisualization({ file }: DataVisualizationProps) {
                   />
                 ) : (
                   <ScatterPlotWithoutLabels
+                    data={sectionData.data.dataChart}
+                    showLegend={true}
+                  />
+                ))}
+                {sectionData.data.typeChart === "pieChart" &&
+                (sectionData.data.showChartLabels ? (
+                  <PieChartWithLabels
+                    data={sectionData.data.dataChart}
+                    title={sectionData.data.chartTitle}
+                    xLabel={sectionData.data.chartXLabel}
+                    yLabel={sectionData.data.chartYLabel}
+                    showLegend={true}
+                  />
+                ) : (
+                  <PieChartWithoutLabels
                     data={sectionData.data.dataChart}
                     showLegend={true}
                   />
@@ -446,6 +539,14 @@ function DataVisualization({ file }: DataVisualizationProps) {
                 required={false}
                 value={sectionData.data.chartYLabel}
                 onChange={handleYLabel}
+              />
+              <InputField
+                id="yLabelInput"
+                label="Chart Z-Label"
+                placeholder="Chart z-Label"
+                required={false}
+                value={sectionData.data.chartYLabel}
+                onChange={handleZLabel}
               />
             </div>
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">

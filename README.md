@@ -8,7 +8,7 @@
 
 ##### Plots y visualización
 - [ ] Terminar la api de los gráficos (torta, log, buble, parallel y el spiderweb)
-- [ ] Hacer una api para "Scatter plot de A v/s B coloreado por columna C"
+- [x] Hacer una api para "Scatter plot de A v/s B coloreado por columna C"
 
 ##### Estadísticas descriptivas
 - [ ] Terminar api para hacer el heatmap
@@ -26,12 +26,12 @@
 - [ ] Plots y visualización
     - [ ] La idea es habilitar una herramienta de plots, contemplando los siguientes:
         - [x] Gráficos de barra
-        - [ ] Gráficos de torta
+        - [x] Gráficos de torta
         - [x] Scatter plot
-        - [ ] Log plots
+        - [x] Log plots
         - [ ] 3D plots
         - [x] Line plots
-        - [ ] Bubble chart
+        - [x] Bubble chart
         - [ ] Parallel coordinates
         - [ ] Spiderweb
     - [x] Para todos los plots se debe permitir guardar las figuras

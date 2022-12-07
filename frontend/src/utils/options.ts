@@ -49,6 +49,18 @@ export const typeChartsOptions: Option[] = [
     label: "Bar Chart",
   },
   {
+    value: "pieChart",
+    label: "Pie Chart",
+  },
+  {
+    value: "logChart",
+    label: "Log Chart",
+  },
+  {
+    value: "bubbleChart",
+    label: "Bubble Chart",
+  },
+  {
     value: "lineChart",
     label: "Line Chart",
   },
