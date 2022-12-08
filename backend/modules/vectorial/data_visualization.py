@@ -7,7 +7,6 @@ class DataVisualization:
     def data_visualization_info(self, request):
         """Gets columns for selects"""
         data = pd.read_csv(request.files.get("file"))
-        print(data)
         return {
             "columns": [
                 {"value": col, "label": col, "dtype": data[col].dtype.name}
@@ -23,7 +22,9 @@ class DataVisualization:
         return categories, values
 
     def __bar_chart(self, selected_data, df_file):
-        """Requiere una sola columna"""
+        """Requiere una sola columna
+        x-column
+        """
         x_column = selected_data["xColumn"]
         x_values = df_file[x_column]
         res = self.__categorical_count(x_values)
@@ -35,7 +36,9 @@ class DataVisualization:
         }]
 
     def __pie_chart(self, selected_data, df_file):
-        """Requiere una sola columna"""
+        """Requiere una sola columna
+        x-column
+        """
         x_column = selected_data["xColumn"]
         x_values = df_file[x_column]
         res = self.__categorical_count(x_values)
@@ -46,7 +49,10 @@ class DataVisualization:
         }]
 
     def __log_chart(self, selected_data, df_file):
-        """Requiere dos columnas"""
+        """Requiere dos columnas
+        x-column
+        y-column
+        """
         x_column = selected_data["xColumn"]
         y_column = selected_data["yColumn"]
         df_sorted = df_file[[x_column, y_column]]
@@ -63,7 +69,10 @@ class DataVisualization:
         ]
 
     def __line_chart(self, selected_data, df_file):
-        """Requiere dos columnas"""
+        """Requiere dos columnas
+        x-column
+        y-column
+        """
         x_column = selected_data["xColumn"]
         y_column = selected_data["yColumn"]
         df_sorted = df_file[[x_column, y_column]]
@@ -80,7 +89,10 @@ class DataVisualization:
         ]
         
     def __scatter_plot(self, selected_data, df_file):
-        """Requiere tres columnas (columna category puede ser None)"""
+        """Requiere dos columnas
+        x-column
+        y-column
+        """
         x_column = selected_data["xColumn"]
         y_column = selected_data["yColumn"]
         z_column = selected_data["zColumn"]
@@ -101,7 +113,11 @@ class DataVisualization:
         return data
 
     def __bubble_chart(self, selected_data, df_file):
-        """Requiere tres columnas (columna category puede ser None)"""
+        """Requiere tres columnas
+        x-column
+        y-column
+        size
+        """
         x_column = selected_data["xColumn"]
         y_column = selected_data["yColumn"]
         z_column = selected_data["zColumn"]
@@ -120,7 +136,10 @@ class DataVisualization:
         ]
 
     def __radar_plot(self, selected_data, df_file):
-        """Requiere una columna"""
+        """Requiere dos columnas
+        r
+        theta
+        """
         x_column = selected_data["xColumn"]
         x_values = df_file[x_column]
         res = self.__categorical_count(x_values)
@@ -133,10 +152,20 @@ class DataVisualization:
         }]
 
     def __3d_plot(self, selected_data, df_file):
+        """
+        Requiere tres columnas
+        x-column
+        y-column
+        z-column
+        """
         return []
 
     
     def __parallel_coordinates(self, selected_data, df_file):
+        """
+        Aún no lo se
+        """
+
         return []
 
 
