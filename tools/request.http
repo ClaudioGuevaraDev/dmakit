@@ -1,0 +1,22 @@
+
+@api = http://127.0.0.1:4000
+
+POST {{api}}/api/descriptive_statistics/correlation
+Content-Type: application/json
+
+{
+    "xd": "xd"
+}
+
+
+###
+
+POST {{api}}/api/descriptive_statistics/mutual_information
+Content-Type: application/json
+
+{
+    "xd": "xd"
+}
+
+
+###

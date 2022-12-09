@@ -35,3 +35,22 @@ def generate_data_chart():
     except Exception as error:
         response = {"message": f"Error when generating the graph: {error}"}
         return make_response(jsonify(response), 500)
+
+@descriptive_statistics_blueprint.post("/correlation")
+def generate_corr_matrix():
+    """Generate correlation matrix route"""
+    try:
+        response = descriptive_statistics.generate_correlation_matrix()
+        return make_response(jsonify(response), 200)
+    except Exception as error:
+        response = {"message": f"Error when generating the graph: {error}"}
+        return make_response(jsonify(response), 500)
+@descriptive_statistics_blueprint.post("/mutual_information")
+def generate_mutual_information_matrix():
+    """Generate mutual_information matrix route"""
+    try:
+        response = descriptive_statistics.generate_mutual_information_matrix()
+        return make_response(jsonify(response), 200)
+    except Exception as error:
+        response = {"message": f"Error when generating the graph: {error}"}
+        return make_response(jsonify(response), 500)
