@@ -7,12 +7,12 @@
 #### Tareas para la semana del 05/12/2022 - 11/12/2022
 
 ##### Plots y visualización
-- [ ] Terminar la api de los gráficos (torta, log, buble, parallel y el spiderweb)
+- [x] Terminar la api de los gráficos (torta, log, buble y spiderweb) (Queda pendiente Parallel y 3D)
 - [x] Hacer una api para "Scatter plot de A v/s B coloreado por columna C"
 
 ##### Estadísticas descriptivas
 - [ ] Terminar api para hacer el heatmap
-- [ ] Hacer api para análisis de correlación y mutual information
+- [x] Hacer api para análisis de correlación y mutual information
 
 #### Servicios
 
@@ -33,7 +33,7 @@
         - [x] Line plots
         - [x] Bubble chart
         - [ ] Parallel coordinates
-        - [ ] Spiderweb
+        - [x] Spiderweb
     - [x] Para todos los plots se debe permitir guardar las figuras
     - [ ] También debe permitir agrupar o plotear con respecto a algo:
         - [ ] Scatter plot de A v/s B coloreado por columna C
