@@ -12,7 +12,7 @@ data_visualization = DataVisualization()
 def data_visualization_info():
     """Data visualization info route"""
     try:
-        response = data_visualization.data_visualization_info(request)
+        response = data_visualization.data_visualization_info()
         return make_response(jsonify(response), 200)
     except Exception as error:
         response = {

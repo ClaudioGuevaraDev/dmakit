@@ -10,7 +10,7 @@ descriptive_statistics = DescriptiveStatistics()
 def summary():
     """Summary route"""
     try:
-        response = descriptive_statistics.summary(request)
+        response = descriptive_statistics.summary()
         return make_response(jsonify(response), 200)
     except Exception as error:
         response = {"message": f"Error processing the file: {error}"}
@@ -20,7 +20,7 @@ def summary():
 def return_columns():
     """Return columns route"""
     try:
-        response = descriptive_statistics.return_columns(request)
+        response = descriptive_statistics.return_columns()
         return make_response(jsonify(response), 200)
     except Exception as error:
         response = {"message": f"Error processing the file: {error}"}

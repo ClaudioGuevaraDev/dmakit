@@ -1,17 +1,16 @@
 """Descriptive statistics module"""
 import json
-import pandas as pd
-
+from flask import current_app
 class DescriptiveStatistics:
     """Descriptive statistics class"""
-    def summary(self, request):
+    def summary(self):
         """Gets pandas description"""
-        data = pd.read_csv(request.files.get("file"))
+        data = current_app.config["dataframe"]
         response = {"summary": json.loads(data.describe().to_json())}
         return response
-    def return_columns(self, request):
+    def return_columns(self):
         """Returns columns"""
-        data = pd.read_csv(request.files.get("file"))
+        data = current_app.config["dataframe"]
         columns = []
         for column in data.columns:
             columns.append({
@@ -22,7 +21,7 @@ class DescriptiveStatistics:
         return response
     def generate_data_chart(self, request):
         """Generate data chart"""
-        data = pd.read_csv(request.files.get("file"))
+        data = current_app.config["dataframe"]
         type_chart = request.form.get("typeChart")
         data.dropna(inplace=True)
         data_chart = []

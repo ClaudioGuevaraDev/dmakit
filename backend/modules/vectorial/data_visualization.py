@@ -1,12 +1,13 @@
 """Data visualization module"""
 import json
 import pandas as pd
+from flask import current_app
 
 class DataVisualization:
     """Data Visualization class"""
-    def data_visualization_info(self, request):
+    def data_visualization_info(self):
         """Gets columns for selects"""
-        data = pd.read_csv(request.files.get("file"))
+        data = current_app.config["dataframe"]
         return {
             "columns": [
                 {"value": col, "label": col, "dtype": data[col].dtype.name}
@@ -171,7 +172,7 @@ class DataVisualization:
 
     def generate_data_chart(self, request):
         """Gets data chart depending data type"""
-        df_file = pd.read_csv(request.files.get("file"))
+        df_file = current_app.config["dataframe"]
         selected_data = json.loads(request.form.get("data"))
         df_file.dropna(inplace=True)
         type_chart = selected_data["typeChart"]

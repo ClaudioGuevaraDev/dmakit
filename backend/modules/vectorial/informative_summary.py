@@ -1,12 +1,13 @@
 """Informative summary module"""
-import pandas as pd
-
+from backend.modules.utils.import_dataframe import ImportDataFrame
+from flask import current_app
 class InformativeSummary:
     """Informative Summary class"""
     def informative_summary_info(self, request):
         """Informative summary info"""
-        data = pd.read_csv(request.files.get("file"))
-        
+        import_dataframe = ImportDataFrame()
+        import_dataframe.import_df(request)
+        data = current_app.config["dataframe"]
         total_rows = data.shape[0]
         total_columns = data.shape[1]
 
